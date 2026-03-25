@@ -1,0 +1,83 @@
+# Byte-compiled / optimized / DLL files
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables
+
+.env
+.env.*
+*.env
+
+# Flask specific
+
+instance/
+.webassets-cache
+
+# Logs
+
+*.log
+logs/
+
+# SQLite (if used locally)
+
+*.sqlite3
+*.db
+
+# MySQL dumps
+
+*.sql
+
+# IDE / Editor files
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+
+.DS_Store
+
+# Windows
+
+Thumbs.db
+
+# Python packaging
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# pytest / coverage
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+
+.mypy_cache/
+
+# pyenv
+
+.python-version
+
+# pipenv / poetry (if used)
+
+Pipfile.lock
+poetry.lock
+
+# Temporary files
+
+tmp/
+temp/
