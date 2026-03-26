@@ -7,6 +7,7 @@ Requirements: pip install flask flask-cors flask-jwt-extended mysql-connector-py
 
 import os
 import psycopg2
+import sqlite3
 import uuid
 from datetime import datetime, timedelta
 from functools import wraps
@@ -25,7 +26,7 @@ try:
     USE_MYSQL = True
 except ImportError:
     import sqlite3
-    USE_MYSQL = False
+    USE_MYSQL = True
     print(" mysql-connector-python not installed. Using SQLite for demo.")
 
 app = Flask(__name__)
@@ -41,6 +42,7 @@ jwt = JWTManager(app)
 import psycopg2
 import os
 
+    
 def get_db():
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
@@ -138,13 +140,6 @@ except ImportError:
 
 # ─── Auth Routes ───────────────────────────────────────────────
 
-
-@app.route("/", methods=["GET"])
-def base():
-    return jsonify({
-        "message": "Running status : <TRUE>"
-    })
-
 @app.route("/api/auth/register", methods=["POST"])
 def register():
     data = request.json
@@ -171,11 +166,6 @@ def register():
         "token": token
     }), 201
 
-@app.route("/api/health", methods=["GET"])
-def health():
-    return jsonify({
-        "state": True
-    }), 200
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
