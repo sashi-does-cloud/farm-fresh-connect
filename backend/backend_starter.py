@@ -164,6 +164,11 @@ def register():
         "token": token
     }), 201
 
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({
+        "state": True
+    }), 200
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
