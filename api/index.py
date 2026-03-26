@@ -163,11 +163,7 @@ def register():
         return jsonify({"message": "Email already registered"}), 409
 
     conn.close()
-    # token = create_access_token(identity={"id": user_id, "role": data.get("role", "buyer")})
-    token = create_access_token(
-    identity=str(user_id),
-    additional_claims={"role": role}
-)
+    token = create_access_token(identity={"id": uid, "role": role})
     return jsonify({
         "user": {"id": user_id, "name": data["name"], "email": data["email"], "role": data.get("role", "buyer")},
         "token": token
@@ -198,11 +194,7 @@ def login():
     if not check_password(data["password"], pw_hash):
         return jsonify({"message": "Invalid credentials"}), 401
 
-    # token = create_access_token(identity={"id": uid, "role": role})
-    token = create_access_token(
-    identity=str(user_id),
-    additional_claims={"role": role}
-)
+    token = create_access_token(identity={"id": uid, "role": role})
     return jsonify({
         "user": {"id": uid, "name": name, "email": email, "role": role, "location": location},
         "token": token
@@ -212,7 +204,7 @@ def login():
 @app.route("/api/auth/profile", methods=["GET"])
 @jwt_required()
 def profile():
-    # identity = get_jwt_identity()
+    identity = get_jwt_identity()
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
@@ -395,10 +387,6 @@ def delete_product(product_id):
 @jwt_required()
 def create_order():
     identity = get_jwt_identity()
-    claims = get_jwt()              # to access role
-
-    user_id = identity
-    role = claims["role"]
     data = request.json
     order_id = str(uuid.uuid4())
 
