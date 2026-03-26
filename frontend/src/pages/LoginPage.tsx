@@ -47,8 +47,10 @@ export default function LoginPage() {
       // Navigate based on role
       if (role === 'farmer') {
         navigate('/farmer/dashboard');
+        window.location.reload();
       } else {
         navigate('/products');
+        window.location.reload();
       }
     } catch (err) {
       setError(err.message);

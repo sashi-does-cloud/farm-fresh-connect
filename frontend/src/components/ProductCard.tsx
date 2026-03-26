@@ -27,8 +27,13 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card className="group overflow-hidden border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-      <div className="relative aspect-[4/3] bg-secondary/50 flex items-center justify-center overflow-hidden">
-        <span className="text-6xl">{CATEGORY_EMOJI[product.category] || '🌿'}</span>
+      <div className="relative bg-secondary/50 flex items-center justify-center overflow-hidden h-48 w-full object-cover">
+        {/* <span className="text-6xl">{CATEGORY_EMOJI[product.category] || '🌿'}</span> */}
+        <img
+    src={product.image || 'https://via.placeholder.com/400'}
+    alt={product.name}
+    className="h-48 w-full object-cover rounded-t-xl"
+  />
         <Badge className={`absolute top-3 left-3 ${CATEGORY_COLORS[product.category] || ''} border-0 text-xs font-medium`}>
           {product.category}
         </Badge>

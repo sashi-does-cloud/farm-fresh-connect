@@ -48,9 +48,15 @@ export default function RegisterPage() {
 
       // Navigate based on role
       if (role === 'farmer') {
-        navigate('/farmer/dashboard');
+        // navigate('/farmer/dashboard');
+        window.location.replace("/farmer/dashboard");
+        window.location.reload();
+        // window.location.href = "/farmer/dashboard";
       } else {
-        navigate('/products');
+        // navigate('/products');
+        window.location.replace("/products");
+        window.location.reload();
+        // window.location.href = "/products";
       }
     } catch (err) {
       setError(err.message);

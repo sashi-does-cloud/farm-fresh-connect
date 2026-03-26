@@ -12,9 +12,12 @@ import uuid
 from datetime import datetime, timedelta
 from functools import wraps
 from dotenv import load_dotenv
+import os
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+
 from flask_jwt_extended import (
     JWTManager, create_access_token, jwt_required, get_jwt_identity
 )
@@ -30,7 +33,7 @@ except ImportError:
     print(" mysql-connector-python not installed. Using SQLite for demo.")
 
 app = Flask(__name__)
-CORS(app, origins="*")
+CORS(app, supports_credentials=True)
 
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "change-this-secret")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=7)
@@ -160,7 +163,11 @@ def register():
         return jsonify({"message": "Email already registered"}), 409
 
     conn.close()
-    token = create_access_token(identity={"id": user_id, "role": data.get("role", "buyer")})
+    # token = create_access_token(identity={"id": user_id, "role": data.get("role", "buyer")})
+    token = create_access_token(
+    identity=str(user_id),
+    additional_claims={"role": role}
+)
     return jsonify({
         "user": {"id": user_id, "name": data["name"], "email": data["email"], "role": data.get("role", "buyer")},
         "token": token
@@ -191,7 +198,11 @@ def login():
     if not check_password(data["password"], pw_hash):
         return jsonify({"message": "Invalid credentials"}), 401
 
-    token = create_access_token(identity={"id": uid, "role": role})
+    # token = create_access_token(identity={"id": uid, "role": role})
+    token = create_access_token(
+    identity=str(user_id),
+    additional_claims={"role": role}
+)
     return jsonify({
         "user": {"id": uid, "name": name, "email": email, "role": role, "location": location},
         "token": token
@@ -201,7 +212,7 @@ def login():
 @app.route("/api/auth/profile", methods=["GET"])
 @jwt_required()
 def profile():
-    identity = get_jwt_identity()
+    # identity = get_jwt_identity()
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
@@ -384,6 +395,10 @@ def delete_product(product_id):
 @jwt_required()
 def create_order():
     identity = get_jwt_identity()
+    claims = get_jwt()              # to access role
+
+    user_id = identity
+    role = claims["role"]
     data = request.json
     order_id = str(uuid.uuid4())
 
@@ -512,4 +527,5 @@ def update_order_status(order_id):
 if __name__ == "__main__":
     init_db()
     print("🌾 FarmFresh API running at http://localhost:5000")
-    app.run(debug=True, port=5000)
+    # app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
