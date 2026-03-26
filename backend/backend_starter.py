@@ -138,6 +138,13 @@ except ImportError:
 
 # ─── Auth Routes ───────────────────────────────────────────────
 
+
+@app.route("/", methods=["GET"])
+def base():
+    return jsonify({
+        "message": "Running status : <TRUE>"
+    })
+
 @app.route("/api/auth/register", methods=["POST"])
 def register():
     data = request.json
