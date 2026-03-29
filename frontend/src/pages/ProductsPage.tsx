@@ -27,7 +27,7 @@ export default function ProductsPage() {
   const [sort, setSort] = useState<'default' | 'price-low' | 'price-high' | 'rating'>('default');
 
   const filtered = useMemo(() => {
-    let products = MOCK_PRODUCTS.filter((p) => {
+    const products = MOCK_PRODUCTS.filter((p) => {
       const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
       const matchesCategory = category === 'all' || p.category === category;
       return matchesSearch && matchesCategory;
